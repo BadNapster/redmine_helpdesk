@@ -91,6 +91,23 @@ module RedmineHelpdesk
         issue = Issue.find_by_id(issue_id)
         return unless issue
 
+        # status transition by email reply
+        custom_value = custom_field_value(issue.project,'helpdesk-reply-transition')
+        if !issue.closed? && custom_value.present? && custom_value.value.present?
+          tr_status = custom_value.value.split(',')
+          if tr_status.any?
+            status_id_first = IssueStatus.where("name = ?", tr_status.first).try(:first).try(:id) 
+            status_id_last = IssueStatus.where("name = ?", tr_status.last).try(:first).try(:id) 
+
+            unless status_id_first.nil? && status_id_last.nil? 
+              if issue.status_id == status_id_first
+                issue.status_id = status_id_last
+                issue.save
+              end
+            end          
+          end
+        end
+
         # reopening a closed issues by email
         custom_value = custom_field_value(issue.project,'reopen-issues-with')
         if issue.closed? && custom_value.present? && custom_value.value.present?
@@ -99,7 +116,7 @@ module RedmineHelpdesk
             issue.status_id = status_id
             issue.save
           end
-        end
+        end        
 
         # call original method
         receive_issue_reply_without_helpdesk(issue_id, from_journal)

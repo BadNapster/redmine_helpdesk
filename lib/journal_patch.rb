@@ -30,6 +30,26 @@ module RedmineHelpdesk
         # only if the send_to_owner checkbox was checked
         if send_to_owner == true && notes.length != 0
           issue = self.journalized.reload
+
+          # status transition reply from journal
+          custom_value = CustomValue.where(
+            "customized_id = ? AND custom_field_id = ?", issue.project.id, CustomField.find_by_name('helpdesk-send-transition').id
+          ).first
+          if !issue.closed? && custom_value.present? && custom_value.value.present?
+            tr_status = custom_value.value.split(',')
+            if tr_status.any?
+              status_id_first = IssueStatus.where("name = ?", tr_status.first).try(:first).try(:id) 
+              status_id_last = IssueStatus.where("name = ?", tr_status.last).try(:first).try(:id) 
+
+              unless status_id_first.nil? && status_id_last.nil? 
+                if issue.status_id == status_id_first
+                  issue.status_id = status_id_last
+                  issue.save
+                end
+              end          
+            end
+          end
+
           owner_email = issue.custom_value_for( CustomField.find_by_name('owner-email') ).value
           HelpdeskMailer.email_to_supportclient(
             issue, {
