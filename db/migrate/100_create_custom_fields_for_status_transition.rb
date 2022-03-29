@@ -1,4 +1,4 @@
-class CreateCustomFieldsForReply < ActiveRecord::Migration[5.2]
+class CreateCustomFieldsForStatusTransition < ActiveRecord::Migration[5.2]
   def self.up
     c = CustomField.new(
       :name => 'helpdesk-send-transition',
