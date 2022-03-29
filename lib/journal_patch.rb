@@ -33,7 +33,7 @@ module RedmineHelpdesk
 
           # status transition reply from journal
           custom_value = CustomValue.where(
-            "customized_id = ? AND custom_field_id = ?", issue.project.id, CustomField.find_by_name('helpdesk-send-transition').id
+            "customized_id = ? AND custom_field_id = ?", issue.project.id, CustomField.find_by_name('helpdesk-status-transition').id
           ).first
           if !issue.closed? && custom_value.present? && custom_value.value.present?
             tr_status = custom_value.value.split(',')
@@ -42,8 +42,8 @@ module RedmineHelpdesk
               status_id_last = IssueStatus.where("name = ?", tr_status.last).try(:first).try(:id) 
 
               unless status_id_first.nil? && status_id_last.nil? 
-                if issue.status_id == status_id_first
-                  issue.status_id = status_id_last
+                if issue.status_id == status_id_last
+                  issue.status_id = status_id_first
                   issue.save
                 end
               end          

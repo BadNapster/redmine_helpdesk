@@ -92,7 +92,7 @@ module RedmineHelpdesk
         return unless issue
 
         # status transition by email reply
-        custom_value = custom_field_value(issue.project,'helpdesk-reply-transition')
+        custom_value = custom_field_value(issue.project,'helpdesk-status-transition')
         if !issue.closed? && custom_value.present? && custom_value.value.present?
           tr_status = custom_value.value.split(',')
           if tr_status.any?
