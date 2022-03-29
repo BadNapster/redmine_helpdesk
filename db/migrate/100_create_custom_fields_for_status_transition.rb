@@ -4,14 +4,14 @@ class CreateCustomFieldsForStatusTransition < ActiveRecord::Migration[5.2]
       :name => 'helpdesk-send-transition',
       :editable => true,
       :visible => false,          # do not show it on the project summary page
-      :field_format => 'text')
+      :field_format => 'string')
     c.type = 'ProjectCustomField' # cannot be set by mass assignement!
     c.save
     d = CustomField.new(
       :name => 'helpdesk-reply-transition',
       :editable => true,
       :visible => false,          # do not show it on the project summary page
-      :field_format => 'text')
+      :field_format => 'string')
     d.type = 'ProjectCustomField' # cannot be set by mass assignement!
     d.save
   end
