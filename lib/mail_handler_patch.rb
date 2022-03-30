@@ -100,8 +100,8 @@ module RedmineHelpdesk
             status_id_last = IssueStatus.where("name = ?", tr_status.last).try(:first).try(:id) 
 
             unless status_id_first.nil? && status_id_last.nil? 
-              if issue.status_id == status_id_first
-                issue.status_id = status_id_last
+              if issue.status_id == status_id_last
+                issue.status_id = status_id_first
                 issue.save
               end
             end          

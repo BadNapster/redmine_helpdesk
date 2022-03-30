@@ -73,7 +73,7 @@ class HelpdeskMailer < ActionMailer::Base
       t = text.present? ? "#{text}\n\n#{footer}" : reply
       body = expand_macros(t, issue, journal)
 
-      # precess reply-separator
+      # process reply-separator
       f = CustomField.find_by_name('helpdesk-reply-separator')
       reply_separator = issue.project.custom_value_for(f).try(:value)
       if !reply_separator.blank?
