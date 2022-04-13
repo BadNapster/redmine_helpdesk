@@ -4,6 +4,9 @@
 # why we need our own Mailer class.
 #
 module RedmineHelpdesk
+  # module HelpdeskMailer
+    
+  # end
   class HelpdeskMailer < ActionMailer::Base
     helper :application
   
