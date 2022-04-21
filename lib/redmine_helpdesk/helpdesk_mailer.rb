@@ -28,8 +28,8 @@ module RedmineHelpdesk
       carbon_copy = params[:carbon_copy]
   
       redmine_headers 'Project' => issue.project.identifier,
-                      'Issue-Id' => issue.id,
-                      'Issue-Author' => issue.author.login
+                      'Issue-Id' => issue.id
+      redmine_headers 'Issue-Author' => issue.author.login if issue.author
       redmine_headers 'Issue-Assignee' => issue.assigned_to.login if issue.assigned_to
       message_id issue
       references issue
