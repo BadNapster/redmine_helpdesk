@@ -30,7 +30,8 @@ module RedmineHelpdesk
           # sending email notifications to the supportclient
           # only if the send_to_owner checkbox was checked
           if send_to_owner == true && notes.length != 0
-            issue = self.journalized.reload
+            # issue = self.journalized.reload
+            issue = Issue.find_by_id(self.journalized.id)
   
             # status transition reply from journal
             custom_value = CustomValue.where(
