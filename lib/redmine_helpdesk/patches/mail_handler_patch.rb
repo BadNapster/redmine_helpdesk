@@ -61,12 +61,12 @@ module RedmineHelpdesk
             # on the first issue.save. So we need to send
             # the notification email to the supportclient
             # on our own.
-            RedmineHelpdesk::HelpdeskMailer.email_to_supportclient(
-              issue, {
-                :recipient => sender_email,
-                :carbon_copy => carbon_copy
-              }
-            ).deliver
+            # RedmineHelpdesk::HelpdeskMailer.email_to_supportclient(
+            #   issue, {
+            #     :recipient => sender_email,
+            #     :carbon_copy => carbon_copy
+            #   }
+            # ).deliver
           end
           after_dispatch_to_default_hook issue
           return issue
